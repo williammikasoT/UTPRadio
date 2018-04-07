@@ -1,0 +1,50 @@
+upd客服端 tcp客服端  1.使用udp广播找到服务
+	 	     2.找到服务使用tcp连接
+
+////////////////udp
+23 23 00 0C 00 00 99 00 00 00 00 00 00 00 2A 2A 
+
+23 23 00 33 00 00 98 00 08 48 75 61 5A 68 6F 6E 67 01 17 07 31 00 01 C0 A8 02 66 46 51 FF C0 A8 02 9B FF FF FF 00 C0 A8 02 01 C0 A8 02 01 00 00 00 00 00 00 00 2A 2A
+ 
+00 33 			 //数据长度
+00 08 			 //名字长度
+48 75 61 5A 68 6F 6E 67  //名字
+01 17 07 31 00 01        //SN码  直接拼起来
+C0 A8 02 66     	 //服务器IP   192 168 2 102
+46 51       	         //端口         18001
+
+////////////////tcp
+
+23 23 00 0c 00 00 67 00 00 00 00 00 00 00 2a 2a   //心跳
+23 23 00 0e 00 00 70 00 00 01 17 07 31 00 05 00 2a 2a  //0e长度 【01 17 07 31 00 05 SN】 修改SN码
+23 23 00 0e 00 00 76 00 00 c0 a8 02 21 30 39 00 2a 2a  //c0 a8 02 21 修改IP 30 39 修改端口
+23 23 00 11 00 00 68 09 48 75 61 5a 68 6f 6e 67 31 00 00 2a 2a  //11帧长度
+09 名字长度
+
+
+
+
+
+
+/*CSockLx sock;
+	SOCKET s;
+	sockaddr_in addrto;
+	WSADATA wsdata;
+	BOOL bsocket;
+	char *smsg = "this is a test";
+	//int arr[] = {0x23,0x23,0x00,0x0c,0x00,0x00,0x99,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x2A,0x2A};   //错误的写法
+	BYTE buffer[] = { 0x23,0x23,0x00,0x0c,0x00,0x00,0x99,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x2A,0x2A };
+	//BYTE buffer[] = {"helloworld"};
+	//启动SOCKET库，版本为2.0
+	WSAStartup(0x0202, &wsdata);
+	s = WSASocket(AF_INET, SOCK_DGRAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	bsocket = TRUE;
+	SOCKADDR_IN addr;
+	int broad = 1;
+	SOCKET fd = socket(AF_INET, SOCK_DGRAM, 0);
+	setsockopt(fd, SOL_SOCKET, SO_BROADCAST, (const char *)&broad, sizeof(broad));
+	addr.sin_addr.S_un.S_addr = INADDR_BROADCAST;
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(65001);  //发送
+	sendto(fd, (const char*)buffer, 16, 0, (SOCKADDR *)&addr, sizeof(SOCKADDR));
+	*/
